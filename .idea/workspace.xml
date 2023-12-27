@@ -5,8 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1a9c5d25-078f-4776-8dde-6919874f792a" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/BookMasterBatApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/BookMasterBatApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/CustomItemReader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/CustomItemReader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/DuplicateValidationProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/validation/DuplicateValidationProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/ItemProcessorConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/ItemProcessorConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/ItemReaderConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/ItemReaderConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/ItemWriterConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/ItemWriterConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/NotFundNameException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/customException/NotFundNameException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/domain/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/PersonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/repository/PersonRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/PersonValidationRetryProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/validation/PersonValidationRetryProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/SavePersonConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/listener/SavePersonConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/itemReaderAndWriter/SavePersonListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/listener/SavePersonListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/book_master/batch/jobConfig/JobConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/book_master/batch/tasklet/JobConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/book_master/batch/itemReaderAndWriter/SavePersonConfigurationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/book_master/batch/itemReaderAndWriter/SavePersonConfigurationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +38,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -42,6 +59,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
   <component name="ProjectId" id="2UmlVWJEokdUrOPdX7E3zb5HimC" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -58,7 +78,7 @@
     "WebServerToolWindowFactoryState": "false",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/seohong-ik/Desktop/memorize-batch",
+    "last_opened_file_path": "/Users/seohong-ig/Desktop/memorize-batch",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -90,16 +110,21 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="BookMasterBatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ACTIVE_PROFILES" value="--book_master_JobConfig" />
       <module name="memorize-batch.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.book_master.batch.BookMasterBatApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Gradle.memorize-batch" />
+      <item itemvalue="Spring Boot.BookMasterBatApplication" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.memorize-batch" />
@@ -117,6 +142,7 @@
       <workItem from="1693552663282" duration="52000" />
       <workItem from="1693552808476" duration="137000" />
       <workItem from="1693554098011" duration="786000" />
+      <workItem from="1703662261409" duration="1255000" />
     </task>
     <servers />
   </component>

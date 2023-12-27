@@ -1,5 +1,6 @@
 package com.book_master.batch.itemReaderAndWriter;
 
+import com.book_master.batch.domain.Person;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -37,7 +38,6 @@ public class ItemWriterConfiguration {
     private EntityManagerFactory entityManagerFactory;
     @Bean
     public Job itemWriterJob() throws Exception {
-
         return jobBuilderFactory.get("itemWriterJob")
                 .incrementer(new RunIdIncrementer())
                 .start(csvItemWriterStep())
@@ -45,11 +45,8 @@ public class ItemWriterConfiguration {
                 .next(jpaItemWriterStep())
                 .build();
     }
-
-
     @Bean
     public Step csvItemWriterStep() throws Exception {
-
         return stepBuilderFactory.get("csvItemWriterStep")
                 .<Person,Person>chunk(10)
                 .reader(itemReader())
@@ -60,13 +57,11 @@ public class ItemWriterConfiguration {
     }
 
     private ItemWriter<? super Person> csvFileItemWriter() throws Exception {
-
         BeanWrapperFieldExtractor<Person> fieldExtract = new BeanWrapperFieldExtractor<>();
         fieldExtract.setNames(new String[]{"id","name","age","address"});
         DelimitedLineAggregator<Person> lineAggregator = new DelimitedLineAggregator<>();
         lineAggregator.setDelimiter(",");
         lineAggregator.setFieldExtractor(fieldExtract);
-
         FlatFileItemWriter<Person> itemWriter = new FlatFileItemWriterBuilder<Person>()
                 .name("csvFileItemWriter")
                 .encoding("UTF-8")
@@ -76,55 +71,42 @@ public class ItemWriterConfiguration {
                 .footerCallback(writer -> writer.write("-----------------\r"))
                 .append(true)
                 .build();
-
         itemWriter.afterPropertiesSet();;
-
         return itemWriter;
     }
 
     private ItemReader<Person> itemReader() {
-
         return  new CustomItemReader<>(getItems());
     }
 
     private List<Person> getItems(){
-
         List<Person> items = new ArrayList<>();
-
         for (int i = 0; i < 100; i++) {
             //items.add(new Person(i+1,"test name","test age","test address")); merge
             items.add(new Person("test name","test age","test address")); //not merge
         }
-
         return items;
 
     }
-
     @Bean
     public Step jdbcBatchItemStep(){
-
         return stepBuilderFactory.get("jdbcBatchItemStep")
                 .<Person,Person>chunk(10)
                 .reader(itemReader())
                 .writer(jdbcBatchItemWriter())
                 .build();
     }
-
     private ItemWriter<? super Person> jdbcBatchItemWriter() {
-
         JdbcBatchItemWriter<Person> itemWriter = new JdbcBatchItemWriterBuilder<Person>()
                 .dataSource(dataSource)
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
                 .sql("insert into person ( name , age , address) values(:name, :age, :address) ")
                 .build();
-
         itemWriter.afterPropertiesSet();;
-
         return itemWriter;
     }
 
     @Bean Step jpaItemWriterStep() throws Exception {
-
         return stepBuilderFactory.get("jpaItemWriterStep")
                 .<Person,Person>chunk(10)
                 .reader(itemReader())
@@ -133,14 +115,11 @@ public class ItemWriterConfiguration {
     }
 
     private ItemWriter<? super Person> jpaItemWriter() throws Exception {
-
         JpaItemWriter<Person> itemWriter = new JpaItemWriterBuilder<Person>()
                 .entityManagerFactory(entityManagerFactory)
                 .usePersist(true) // defualt merge usePersist true => not merge
                 .build();
-
         itemWriter.afterPropertiesSet();
-
         return itemWriter;
     }
 

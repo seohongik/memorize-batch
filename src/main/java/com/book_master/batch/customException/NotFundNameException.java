@@ -1,4 +1,4 @@
-package com.book_master.batch.itemReaderAndWriter;
+package com.book_master.batch.customException;
 
 public class NotFundNameException extends RuntimeException{
 }

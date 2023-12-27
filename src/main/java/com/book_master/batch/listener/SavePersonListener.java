@@ -1,4 +1,4 @@
-package com.book_master.batch.itemReaderAndWriter;
+package com.book_master.batch.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
@@ -14,51 +14,38 @@ import org.springframework.batch.core.annotation.BeforeStep;
 public class SavePersonListener {
 
     public static class SavePersonJobExecutionListener implements JobExecutionListener{
-
-
         @Override
         public void beforeJob(JobExecution jobExecution) {
             log.info("beforeJob");
         }
-
         @Override
         public void afterJob(JobExecution jobExecution) {
-
             int sum = jobExecution.getStepExecutions().stream().mapToInt(StepExecution::getWriteCount).sum();
             log.info("afterJob :{}", sum);
         }
     }
 
     public static class SavePersonAnnotationJobExecutionListener{
-
         @BeforeJob
         public void beforeJob(JobExecution jobExecution) {
             log.info("annotationBeforeJob");
         }
-
         @AfterJob
         public void afterJob(JobExecution jobExecution) {
-
             int sum = jobExecution.getStepExecutions().stream().mapToInt(StepExecution::getWriteCount).sum();
             log.info("annotationAfterJob :{}", sum);
         }
     }
 
     public static class SavePersonAnnotationStepExecutionListener{
-
         @BeforeStep
         public void BeforeStep(StepExecution stepExecution) {
             log.info("annotationBeforeStep");
         }
-
         @AfterStep
         public ExitStatus afterStep(StepExecution stepExecution) {
-
             log.info("annotationAfterStep :{}",stepExecution.getWriteCount());
-
             return stepExecution.getExitStatus();
         }
-
-
     }
 }

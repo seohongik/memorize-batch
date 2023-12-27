@@ -1,4 +1,4 @@
-package com.book_master.batch.itemReaderAndWriter;
+package com.book_master.batch.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -30,7 +29,6 @@ public class Person {
     }
 
     public boolean isNotEmptyName() {
-
         return Objects.nonNull(this.name) && !name.isEmpty();
     }
 

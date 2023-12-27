@@ -1,27 +1,20 @@
 package com.book_master.batch.itemReaderAndWriter;
 
+import com.book_master.batch.listener.SavePersonConfiguration;
+import com.book_master.batch.repository.PersonRepository;
 import org.assertj.core.api.Assertions;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.configuration.support.ClasspathXmlApplicationContextsFactoryBean;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
-import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.beans.PropertyVetoException;
-import java.beans.beancontext.BeanContext;
 
 @RunWith(value = SpringRunner.class)
 @SpringBootTest(classes = {SavePersonConfiguration.class,TestConfiguration.class,SpringBatchTest.class})
@@ -31,7 +24,7 @@ public class SavePersonConfigurationTest {
     private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
-    private  PersonRepository personRepository;
+    private PersonRepository personRepository;
 
 
     @Test

@@ -1,4 +1,4 @@
-package com.book_master.batch.jobConfig;
+package com.book_master.batch.tasklet;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,7 +97,6 @@ public class JobConfig {
 
     @Bean
     public Step next03Step(){
-
         return stepBuilderFactory.get("book_master_next03_TaskStep")
                 .tasklet(tasklet())
                 .build();
@@ -105,7 +104,6 @@ public class JobConfig {
     }
 
     private Tasklet tasklet(){
-
         return ((contribution, chunkContext) -> {
             List<String> items = getItems();
             log.info("get Item ::::{}",items);
@@ -115,11 +113,8 @@ public class JobConfig {
     }
 
     private List<String> getItems(){
-
         List<String> items = new ArrayList<>();
-
         for(int i=0; i<100; i++){
-
             items.add(i+"Hello");
         }
         return items;
@@ -128,7 +123,6 @@ public class JobConfig {
     @Bean
     @JobScope
     public Step chunkStep(@Value( "#{jobParameters[chunkSize]}") String chunkSize ){
-
         return stepBuilderFactory.get("book_master_next03_ChunkStep")
                 //첫번째 reader 에서 읽고 반환되는 input  두번째 프로세스 거치고 난 output
                 .<String,String>chunk(Strings.isNotEmpty(chunkSize) ?Integer.parseInt(chunkSize) :10)
@@ -140,24 +134,21 @@ public class JobConfig {
     }
 
     public ItemReader<String> itemReader(){
-
         return new ListItemReader<>(getItems());
     }
 
     public ItemProcessor<String,String> itemProcessor(){
-        //null 이면 넘어 writer로 넘어가지 못함
+        //null 이면 writer로 넘어가지 못함
         return item -> item+", Spring Batch";
     }
 
     public ItemWriter<String> itemWriter(){
-
         return items -> log.info("chunk item :{}",items);
     }
 
 
     @Bean
     public Step taskletToChunkStep(){
-
         return stepBuilderFactory.get("book_master_next05_taskletToChunkStep")
                 .tasklet(taskletToChunkTasklet(null))
                 .build();
@@ -170,17 +161,14 @@ public class JobConfig {
     public Tasklet taskletToChunkTasklet(@Value( "#{jobParameters[chunkSize]}") String val ){
         List<String> items = getItems();
         return (contribution, chunkContext) -> {
-
             StepExecution stepExecution = contribution.getStepExecution();
             //JobParameters jobParameters = stepExecution.getJobParameters();
             //String val = jobParameters.getString("chunkSize", "10");
-
             int chunkSize= Strings.isNotEmpty(val) ?Integer.parseInt(val) :10;
             int fromIdx = stepExecution.getReadCount();
             int toIdx = fromIdx+chunkSize;
 
             if(fromIdx>=items.size()){
-
                 return RepeatStatus.FINISHED;
             }
 

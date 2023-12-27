@@ -1,5 +1,10 @@
-package com.book_master.batch.itemReaderAndWriter;
+package com.book_master.batch.listener;
 
+import com.book_master.batch.customException.NotFundNameException;
+import com.book_master.batch.domain.Person;
+import com.book_master.batch.listener.SavePersonListener;
+import com.book_master.batch.validation.DuplicateValidationProcessor;
+import com.book_master.batch.validation.PersonValidationRetryProcessor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -27,7 +32,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.persistence.EntityManagerFactory;
-import java.security.PublicKey;
 
 @Slf4j
 @Configuration
@@ -35,13 +39,10 @@ import java.security.PublicKey;
 public class SavePersonConfiguration {
     private JobBuilderFactory jobBuilderFactory;
     private StepBuilderFactory stepBuilderFactory;
-
     private EntityManagerFactory entityManagerFactory;
-
 
     @Bean
     public Job savePersonJob() throws Exception {
-
         return jobBuilderFactory.get("savePersonJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(new SavePersonListener.SavePersonJobExecutionListener())
@@ -50,12 +51,10 @@ public class SavePersonConfiguration {
                 .build();
     }
 
-
     @JobScope
-    public Step savePersonStep( @Value("#{jobParameters[allowDuplicate]}") String allowDuplicate ) throws Exception {
-
+    public Step savePersonStep(@Value("#{jobParameters[allowDuplicate]}") String allowDuplicate) throws Exception {
         return stepBuilderFactory.get("savePersonStep")
-                .<Person,Person>chunk(10)
+                .<Person, Person>chunk(10)
                 .reader(itemReader())
                 //.processor(new DuplicateValidationProcessor<>(Person::getName,Boolean.parseBoolean(allowDuplicate)))
                 .processor(itemProcessor(allowDuplicate))
@@ -69,51 +68,35 @@ public class SavePersonConfiguration {
                 .build();
     }
 
-    private ItemProcessor<? super Person,? extends Person> itemProcessor(String allowDuplicate) throws Exception {
-
-        DuplicateValidationProcessor<Person> duplicateValidationProcessor= new DuplicateValidationProcessor<Person>(Person::getName,Boolean.parseBoolean(allowDuplicate));
-
-        ItemProcessor<Person,Person> validationProcessor = item ->{
-
-         if(item.isNotEmptyName()) {
-             return item;
-         }
+    private ItemProcessor<? super Person, ? extends Person> itemProcessor(String allowDuplicate) throws Exception {
+        DuplicateValidationProcessor<Person> duplicateValidationProcessor = new DuplicateValidationProcessor<Person>(Person::getName, Boolean.parseBoolean(allowDuplicate));
+        ItemProcessor<Person, Person> validationProcessor = item -> {
+            if (item.isNotEmptyName()) {
+                return item;
+            }
             throw new NotFundNameException();
         };
-
-        CompositeItemProcessor<Person, Person> itemProcessor = new CompositeItemProcessorBuilder<Person,Person>().delegates(new PersonValidationRetryProcessor(), validationProcessor, duplicateValidationProcessor).build();
-
-        itemProcessor.afterPropertiesSet();;
-
+        CompositeItemProcessor<Person, Person> itemProcessor = new CompositeItemProcessorBuilder<Person, Person>().delegates(new PersonValidationRetryProcessor(), validationProcessor, duplicateValidationProcessor).build();
+        itemProcessor.afterPropertiesSet();
         return itemProcessor;
     }
 
 
     private ItemWriter<? super Person> itemWriter() throws Exception {
-
-        //return items -> items.forEach(x->log.info("저는 {} 입니다",x.getName()));
-
         JpaItemWriter<Person> jpaItemWriter = new JpaItemWriterBuilder<Person>().entityManagerFactory(entityManagerFactory).build();
-
-        ItemWriter<Person> logItemWriter = items -> log.info("person.size : {}",items.size());
-
+        ItemWriter<Person> logItemWriter = items -> log.info("person.size : {}", items.size());
         CompositeItemWriter<Person> compositeItemWriter = new CompositeItemWriterBuilder<Person>().delegates(jpaItemWriter, logItemWriter).build();
-
         compositeItemWriter.afterPropertiesSet();
-
         return compositeItemWriter;
-
     }
 
     private ItemReader<? extends Person> itemReader() throws Exception {
-
         DefaultLineMapper<Person> defaultLineMapper = new DefaultLineMapper<>();
         DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
-        delimitedLineTokenizer.setNames("name","age","address");
+        delimitedLineTokenizer.setNames("name", "age", "address");
         defaultLineMapper.setLineTokenizer(delimitedLineTokenizer);
-
         defaultLineMapper.setFieldSetMapper(fieldSet ->
-                new Person(fieldSet.readString(0),fieldSet.readString(1),fieldSet.readString(2)));
+                new Person(fieldSet.readString(0), fieldSet.readString(1), fieldSet.readString(2)));
 
         FlatFileItemReader<Person> itemReader = new FlatFileItemReaderBuilder<Person>()
                 .name("savePersonItemReader")
@@ -124,9 +107,6 @@ public class SavePersonConfiguration {
                 .build();
 
         itemReader.afterPropertiesSet();
-
         return itemReader;
     }
-
-
 }
